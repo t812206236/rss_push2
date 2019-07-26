@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee   
+	http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+
+	<error-page>
+		<error-code>404</error-code>
+		<location>/404.jsp</location>
+	</error-page>
+	
+	<context-param>
+		<param-name>encoding</param-name>
+		<param-value>UTF-8</param-value>
+	</context-param>
+
+	<listener>
+		<listener-class>onem.cjq.rss.listener.WebContextListener</listener-class>
+	</listener>
+
+	<servlet>
+		<servlet-name>FeedServlet</servlet-name>
+		<servlet-class>onem.cjq.rss.servlet.FeedServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>FeedServlet</servlet-name>
+		<url-pattern>/FeedServlet</url-pattern>
+	</servlet-mapping>
+
+	<filter>
+		<display-name>TranactionFilter</display-name>
+		<filter-name>TranactionFilter</filter-name>
+		<filter-class>onem.cjq.rss.filter.TranactionFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>TranactionFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<filter>
+		<display-name>EncodingFilter</display-name>
+		<filter-name>EncodingFilter</filter-name>
+		<filter-class>onem.cjq.rss.filter.EncodingFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>EncodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+</web-app> 

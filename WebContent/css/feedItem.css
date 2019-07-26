@@ -1,0 +1,36 @@
+@CHARSET "UTF-8";
+
+h1,h2,h3,p
+{
+	margin-top:0;
+}
+
+.textarea
+{
+	height:150px;
+	width:500px;
+	overflow:auto;
+	border: 1px solid #999999;
+	font-size: x-small;
+}
+
+.text
+{
+	width:500px;
+}
+
+#wrap
+{
+	width: 500px;
+	margin: auto;
+}
+
+table,th,td
+{
+	border:1px solid blue;
+}
+
+strong
+{
+	color:red;
+}
