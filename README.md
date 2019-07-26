@@ -1,17 +1,14 @@
 # 在线RSS第二版
 
 ## 基本信息
-根据尚硅谷java web教程中的bookstore项目，重新写了Rss在线制作工具，工具的使用方式和feed43是相同的
-依旧秉承简单够用的宗旨去开发项目
-MVC
-	-Model:POJO
-	-Controller:Servlet
-	-View:Jsp+EL+JSTL
-数据库：MYSQL
-数据源：C3P0
-JDBC：DBUtils
-事务解决方案：JQuery+Javascript+JSON+Google-GSON
-层之间解耦：工厂设计模式
+
+* 根据尚硅谷java web教程中的bookstore项目，重新写了Rss在线制作工具，工具的使用方式和feed43是相同的，依旧秉承简单够用的宗旨去开发项目  
+* Model:POJO,Controller:Servlet  ,View:Jsp+EL+JSTL  
+* 数据库：MYSQL  
+* 数据源：C3P0  
+* JDBC：DBUtils  
+* 事务解决方案：JQuery+Javascript+JSON+Google-GSON  
+* 层之间解耦：工厂设计模式  
 
 
 ## 完成情况 since 2019-7-20 
