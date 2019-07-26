@@ -40,17 +40,14 @@ public class RssGenManage implements Runnable {
 		ScheduledFuture<?> task = null;
 		lock.lock();
 		try {
-			if ((task = tasks.get(feed.getId())) == null) {
-				System.out.println("更新还未被调度的任务id " + feed.getId());
-				// 这里不用考虑feed在数据库是否存在的问题，因为进入feed制作页面必定会创建一个带id的feed
-				// 所以只要更新就好了
-				fdi.updateFeed(feed);			
-			} else {
-				System.out.println("更新已经被调度的任务id "+feed.getId());
-				task.cancel(true);
-				task = ses.scheduleAtFixedRate(new RssGenTaskRunnable(feed), 0, 30, TimeUnit.MINUTES);
-				tasks.put(feed.getId(), task);
+			// 不需要考虑feed是否存在于数据库中，因为feed制作页面会帮助分配一个新的feed
+			fdi.updateFeed(feed);
+			if ((task = tasks.get(feed.getId())) != null) {
+				System.out.println("更新已经被调度的任务id " + feed.getId());
+				task.cancel(true);		
 			}
+			task = ses.scheduleAtFixedRate(new RssGenTaskRunnable(feed), 0, 30, TimeUnit.MINUTES);
+			tasks.put(feed.getId(), task);
 		} catch (Exception e) {
 			System.out.println("添加任务时出现问题");
 		}finally {
@@ -89,10 +86,10 @@ public class RssGenManage implements Runnable {
 			try {
 				final Feed feed = it.next();
 				// 重新校验该任务的有效性，因为用户可能提前删除掉某个任务
-				// 或者通过addTask去更新某个任务
-				if (fdi.getFeed(feed.getId()) == null) {
+				// 或者通过addTask去提前增加某个任务
+				if (fdi.getFeed(feed.getId()) == null || tasks.get(feed.getId())!=null) {
 					it.remove();
-					System.out.println("更新时发现无效任务，取消");
+					System.out.println("更新时发现无效任务或者已经被调度，取消");
 					continue;
 				}
 				ScheduledFuture<?> sf = ses.scheduleAtFixedRate(new RssGenTaskRunnable(feed), 0, 30, TimeUnit.MINUTES);

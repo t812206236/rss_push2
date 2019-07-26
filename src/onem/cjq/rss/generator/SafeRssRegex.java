@@ -61,7 +61,7 @@ public class SafeRssRegex implements RssRegex {
 		new Thread(task).start();
 		Object result = null;
 		try {
-			result = task.get(1, TimeUnit.DAYS);
+			result = task.get(3, TimeUnit.SECONDS);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

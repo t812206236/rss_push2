@@ -154,6 +154,7 @@ public class FeedServlet extends HttpServlet {
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				System.out.println("网络请求错误 " + urlStr);
+				e.printStackTrace();
 				map.put("rawSrc", "无法获取该网页的内容，可能被墙，也有可能是获取方式存在问题，待优化！");
 			}
 			break;
@@ -187,6 +188,7 @@ public class FeedServlet extends HttpServlet {
 			try {
 				String result=ss.generateTempXML(feed, feedCache);
 				map.put("result", result);
+				rgm.addTask(feed);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				System.out.println("生成xml预览失败");

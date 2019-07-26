@@ -7,14 +7,14 @@ import java.util.Locale;
 
 public class Rfc822Time {
 	public static String dateToStr() {
-		SimpleDateFormat fm = new SimpleDateFormat("EEE, dd MMM yyyy hh:mm:ss", Locale.ENGLISH);
+		SimpleDateFormat fm = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss", Locale.ENGLISH);
 		Date date = new Date();
 		// System.out.println(date);
 		return fm.format(date) + " GMT";
 	}
 
 	public static Date strToDate(String s) throws ParseException {
-		SimpleDateFormat fm = new SimpleDateFormat("EEE, dd MMM yyyy hh:mm:ss", Locale.ENGLISH);
+		SimpleDateFormat fm = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss", Locale.ENGLISH);
 		return fm.parse(s);
 	}
 
