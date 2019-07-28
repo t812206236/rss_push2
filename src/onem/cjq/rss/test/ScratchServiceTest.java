@@ -1,4 +1,4 @@
-package onem.cjq.rss.dao.test;
+package onem.cjq.rss.test;
 
 import org.junit.Test;
 

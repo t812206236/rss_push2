@@ -30,8 +30,8 @@ public class WebGetter {
 			SslUtils.ignoreSsl();
 		}
 		URLConnection urlc = url.openConnection();
-		urlc.setConnectTimeout(5000);
-		urlc.setReadTimeout(10000);
+		urlc.setConnectTimeout(10000);
+		urlc.setReadTimeout(20000);
 		urlc.setRequestProperty("user-agent",
 				"Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:48.0) Gecko/20100101 Firefox/48.0");
 		InputStream ins = urlc.getInputStream();

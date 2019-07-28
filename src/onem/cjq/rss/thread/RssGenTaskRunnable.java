@@ -30,6 +30,7 @@ public class RssGenTaskRunnable implements Runnable {
 			// 上面的三条指令都可能产生不同的异常，可能需要分开来各自处理
 		} catch (Exception e) {
 			System.out.println("RssGenTaskRunnable--task process fail,try rollback it");
+			e.printStackTrace();
 			try {
 				conn.rollback();
 			} catch (SQLException e1) {

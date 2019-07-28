@@ -57,7 +57,7 @@
 				<tr>
 
 					<td>
-						<a href="FeedServlet?method=getRss&feedId=${feed.id}">${feed.webRawTitleName}</a>
+						<a href="rss_${feed.id}.xml">${feed.webRawTitleName}</a>
 					</td>
 					<td>
 						<a href="FeedServlet?method=editFeed&pageNum=${feedpage.pageNo}&feedId=${feed.id}">编辑</a>

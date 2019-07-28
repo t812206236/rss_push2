@@ -87,7 +87,7 @@ public class FeedDAOImpl extends BaseDAO<Feed> implements FeedDAO{
 				+ "webEncode=?,webGlobalReg=?,webItemReg=?,composeTitleReg=?,composeLinkReg=?,composeContentReg=?"
 				+ "WHERE id=?";
 		update(sql, feed.getWebRawTitleName(),feed.getWebRawDesc(),feed.getWebPath(),
-				feed.getWebEncode(),feed.getWebGlobalReg(),feed.getWebItemReg(),feed.getComposeTitleReg(),feed.getComposeTitleReg(),feed.getComposeContentReg(),
+				feed.getWebEncode(),feed.getWebGlobalReg(),feed.getWebItemReg(),feed.getComposeTitleReg(),feed.getComposeLinkReg(),feed.getComposeContentReg(),
 				feed.getId());
 	}
 

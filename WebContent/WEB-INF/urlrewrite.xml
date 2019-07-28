@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<urlrewrite>
+	<rule>
+		<note>
+			rss获取链接的重写
+		</note>
+		<from>^/rss_([0-9]+).xml$</from>
+		<to type="forward">/FeedServlet?method=getRss&amp;feedId=$1</to>
+	</rule>
+</urlrewrite>
