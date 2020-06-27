@@ -1,5 +1,7 @@
 package onem.cjq.rss.thread;
 
+import java.net.ConnectException;
+import java.net.SocketTimeoutException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -27,8 +29,13 @@ public class RssGenTaskRunnable implements Runnable {
 			conn.setAutoCommit(false);
 			new ScratchService().generateXMLAndSave(feed);
 			conn.commit();
+			System.out.println(feed.getId()+"事务已提交~");
 			// 上面的三条指令都可能产生不同的异常，可能需要分开来各自处理
-		} catch (Exception e) {
+		} catch (SocketTimeoutException exception) {
+			System.out.println("更新任务时连接超时！");
+		}catch (ConnectException e) {
+			System.out.println("更新任务时被拒绝连接！");
+		}catch (Exception e) {
 			System.out.println("RssGenTaskRunnable--task process fail,try rollback it");
 			e.printStackTrace();
 			try {

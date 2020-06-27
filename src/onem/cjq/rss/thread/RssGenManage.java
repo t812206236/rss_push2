@@ -102,7 +102,7 @@ public class RssGenManage implements Runnable {
 			}
 			// 等待十秒后执行下一个任务，目的为了错开任务，避免一次占用大量的connection和网络资源
 			try {
-				Thread.sleep(10 * 1000);
+				Thread.sleep(3 * 1000);
 			} catch (InterruptedException e1) {
 				System.out.println("不可能到此处");
 			}
