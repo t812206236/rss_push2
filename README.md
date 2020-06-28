@@ -1,6 +1,11 @@
 # 在线RSS制作第二版
 
-[在线示例](http://27.126.180.127:8080)
+[在线示例,服务器过期了](http://27.126.180.127:8080)
+
+## 搭建方式
+
+只依赖mysql，导入数据库，已上传rss_push2.sql
+再改一下c3p0-config.xml的数据库配置为你自己的数据库配置即可
 
 ## 基本信息
 
@@ -32,6 +37,8 @@
 15. xml链接重写 √
 16. 登录持久化
 
+## 数据库按时间倒序查询
 
+SELECT * FROM rss.rssItems order by str_to_date(scratchDate,'%W, %d %b %Y %T') desc;
 
 
