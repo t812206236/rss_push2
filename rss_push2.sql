@@ -26,15 +26,15 @@ CREATE TABLE `feeds` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `webRawTitleName` text,
   `webRawDesc` text,
-  `webPath` text,
-  `webEncode` text,
-  `webGlobalReg` text,
-  `webItemReg` text,
-  `composeTitleReg` text,
-  `composeLinkReg` text,
-  `composeContentReg` text,
+  `webPath` text CHARACTER SET utf8,
+  `webEncode` text CHARACTER SET utf8,
+  `webGlobalReg` text CHARACTER SET utf8,
+  `webItemReg` text CHARACTER SET utf8,
+  `composeTitleReg` text CHARACTER SET utf8,
+  `composeLinkReg` text CHARACTER SET utf8,
+  `composeContentReg` text CHARACTER SET utf8,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=75 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -46,11 +46,11 @@ DROP TABLE IF EXISTS `lastestRss`;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `lastestRss` (
   `feedId` int(11) NOT NULL,
-  `lastBuildDate` text,
-  `fullContent` text,
+  `lastBuildDate` text CHARACTER SET utf8,
+  `fullContent` text CHARACTER SET utf8,
   PRIMARY KEY (`feedId`),
   CONSTRAINT `fk_lastestRss_1` FOREIGN KEY (`feedId`) REFERENCES `feeds` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -62,15 +62,15 @@ DROP TABLE IF EXISTS `rssItems`;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `rssItems` (
   `feedId` int(11) NOT NULL,
-  `guid` varchar(100) NOT NULL,
-  `scratchDate` text,
-  `title` text,
-  `link` text,
-  `description` text,
+  `guid` varchar(100) CHARACTER SET utf8 NOT NULL,
+  `scratchDate` text CHARACTER SET utf8,
+  `title` text CHARACTER SET utf8,
+  `link` text CHARACTER SET utf8,
+  `description` text CHARACTER SET utf8,
   PRIMARY KEY (`guid`),
   KEY `fk_rssItems_1_idx` (`feedId`),
   CONSTRAINT `fk_rssItems_1` FOREIGN KEY (`feedId`) REFERENCES `feeds` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -82,4 +82,4 @@ CREATE TABLE `rssItems` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-07-26 15:59:12
+-- Dump completed on 2020-07-27 15:41:57
