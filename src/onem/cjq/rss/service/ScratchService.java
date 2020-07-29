@@ -154,7 +154,7 @@ public class ScratchService {
 		result+="<rss version=\"2.0\">\r\n";
 		result+="<channel>\r\n";
 		result+="<title><![CDATA["+feed.getWebRawTitleName()+"]]></title>\r\n";
-		result+="<link>"+StringEscapeUtils.escapeXml10(feed.getWebPath())+"</link>\r\n";
+		result+="<link>"+this.escapeXML(feed.getWebPath())+"</link>\r\n";
 		result+="<description><![CDATA["+feed.getWebRawDesc()+"]]></description>\r\n";
 		result+="<lastBuildDate>"+Rfc822Time.dateToStr()+"</lastBuildDate>\r\n";
 		result+="<generator>No Generator</generator>\r\n";
@@ -166,7 +166,7 @@ public class ScratchService {
 			result+="<guid isPermaLink=\"false\">"+rssItem.getGuid()+"</guid>\r\n";
 			result+="<pubDate>"+rssItem.getScratchDate()+"</pubDate>\r\n";
 			result+="<title><![CDATA["+rssItem.getTitle()+"]]></title>\r\n";
-			result+="<link>"+StringEscapeUtils.escapeXml10(rssItem.getLink())+"</link>\r\n";
+			result+="<link>"+this.escapeXML(rssItem.getLink())+"</link>\r\n";
 			result+="<description><![CDATA["+rssItem.getDescription()+"]]></description>\r\n";
 			result+="</item>\r\n";
 		}
@@ -182,7 +182,11 @@ public class ScratchService {
 		}else {
 			lrd.updateRss(lr);
 		}
-		
+	}
+	
+	private String escapeXML(String str) {
+		String src=StringEscapeUtils.unescapeXml(str);
+		return StringEscapeUtils.escapeXml10(src);
 	}
 	
 }
