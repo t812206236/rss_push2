@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import com.google.gson.Gson;
 
 import onem.cjq.rss.domain.Feed;
@@ -21,6 +23,7 @@ import onem.cjq.rss.web.FeedCache;
 import onem.cjq.rss.web.Page;
 
 public class FeedServlet extends HttpServlet {
+	private static Logger logger = Logger.getLogger(FeedServlet.class); 
 
 	private static final long serialVersionUID = 1L;
 	private FeedService fs = new FeedService();
@@ -31,7 +34,7 @@ public class FeedServlet extends HttpServlet {
 	public void init() throws ServletException {
 		// TODO Auto-generated method stub
 		super.init();
-		System.out.println("servlet init");
+		logger.debug("servlet init");
 	}
 
 	@Override
@@ -51,7 +54,7 @@ public class FeedServlet extends HttpServlet {
 			method.setAccessible(true);
 			method.invoke(this, req, resp);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e);
 			// throw exception for filter rollback tranaction
 			throw new RuntimeException(e);
 		}
@@ -64,7 +67,8 @@ public class FeedServlet extends HttpServlet {
 		try {
 			feedId = Integer.parseInt(feedIdStr);
 		} catch (NumberFormatException e) {
-			System.out.println("getRss---非法id出现"+feedIdStr);
+			logger.debug("getRss---非法id出现"+feedIdStr);
+			logger.error(e);
 		}
 		
 		lastestRss=fs.getRss(feedId);
@@ -81,7 +85,8 @@ public class FeedServlet extends HttpServlet {
 		try {
 			pageNum = Integer.parseInt(pageNoStr);
 		} catch (NumberFormatException e) {
-			System.out.println("getFeeds---非法页码出现"+pageNoStr);
+			logger.debug("getFeeds---非法页码出现"+pageNoStr);
+			logger.error(e);
 		}
 		// 此处的非法页码值会在获取时矫正
 		Page<Feed> page = fs.getPage(pageNum);
@@ -95,7 +100,7 @@ public class FeedServlet extends HttpServlet {
 		try {
 			feedId = Integer.parseInt(feedIdStr);
 		} catch (NumberFormatException e) {
-			System.out.println("editFeed---feed码非法，可能是新建feed请求"+feedIdStr);
+			logger.debug("editFeed---feed码非法，可能是新建feed请求"+feedIdStr);
 		}
 		// 此处的码值非法可能会新建一个feed
 		Feed feed = fs.getFeed(feedId);
@@ -111,7 +116,8 @@ public class FeedServlet extends HttpServlet {
 		try {
 			feedId = Integer.parseInt(feedIdStr);
 		} catch (NumberFormatException e) {
-			System.out.println("delFeed---feed码参数非法"+feedIdStr);
+			logger.debug("delFeed---feed码参数非法"+feedIdStr);
+			logger.error(e);
 			resp.sendRedirect(req.getContextPath() + "/error-1.jsp");
 			return;
 		}
@@ -131,7 +137,7 @@ public class FeedServlet extends HttpServlet {
 		// todo 需要检查feed不存在的情况，此处需要抛出异常并且跳转页面
 		if (((feed = (Feed) req.getSession().getAttribute("feed")) == null)
 				|| ((feedCache = (FeedCache) req.getSession().getAttribute("feedCache")) == null)) {
-			System.out.println("在feed处理时丢是feed相关信息，这是一个灾难性错误，请检查!");
+			logger.debug("在feed处理时丢是feed相关信息，这是一个灾难性错误，请检查!");
 			resp.sendRedirect(req.getContextPath() + "/error-1.jsp");
 			return;
 		}
@@ -150,11 +156,11 @@ public class FeedServlet extends HttpServlet {
 				map.put("title", feed.getWebRawTitleName());
 				map.put("desc", feed.getWebRawDesc());
 				map.put("rawSrc", src);
-				// System.out.println(fri.getTitle()+" "+ fri.getDesc());
+				// logger.debug(fri.getTitle()+" "+ fri.getDesc());
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
-				System.out.println("网络请求错误 " + urlStr);
-				e.printStackTrace();
+				logger.error("网络请求错误 " + urlStr);
+				logger.error(e);
 				map.put("rawSrc", "无法获取该网页的内容，可能被墙，也有可能是获取方式存在问题，待优化！");
 			}
 			break;
@@ -165,14 +171,15 @@ public class FeedServlet extends HttpServlet {
 			feed.setWebGlobalReg(globalRegStr);
 			feed.setWebItemReg(itemRegStr);
 			map = new HashMap<>();
-			// System.out.println(globalRegStr+" "+itemRegStr );
+			// logger.debug(globalRegStr+" "+itemRegStr );
 			try {
 				String extractResult = ss.extract(feed,feedCache);
 				map.put("result", extractResult);
-				// System.out.println(extractResult);
+				// logger.debug(extractResult);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
-				System.out.println("正则表达式提取异常 global" + globalRegStr + " item" + itemRegStr);
+				logger.debug("正则表达式提取异常 global" + globalRegStr + " item" + itemRegStr);
+				logger.error(e);
 				map.put("result", "表达式异常导致处理超时，请检查你的表达式是否正确！");
 			}
 
@@ -191,7 +198,8 @@ public class FeedServlet extends HttpServlet {
 				rgm.addTask(feed);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
-				System.out.println("生成xml预览失败");
+				logger.debug("生成xml预览失败");
+				logger.error(e);
 				map.put("result", "生成失败，请确定之前的操作Reload和Extract都已经正常执行并且已经得到你想要的结果！");
 			}
 			

@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.log4j.Logger;
 
 import onem.cjq.rss.dao.LastestRssDAO;
 import onem.cjq.rss.dao.RssItemDAO;
@@ -26,6 +27,7 @@ import onem.cjq.rss.utils.Rfc822Time;
 import onem.cjq.rss.web.FeedCache;
 
 public class ScratchService {
+	private static Logger logger = Logger.getLogger(ScratchService.class); 
 	
 	/**
 	 * 加载网页的信息，并将相关数据填充到feed中
@@ -100,7 +102,7 @@ public class ScratchService {
 		RssItemDAO rid=new RssItemDAOImpl();
 		List<RssItem> list2=new ArrayList<>();
 		for (RssEachItem rssEachItem : list1) {
-			//System.out.println(rssEachItem);
+			//logger.debug(rssEachItem);
 			RssItem ri=null;
 			//item不在数据库中
 			if((ri=rid.getRssItem(feed.getId(), rssEachItem.getLink()))==null) {
@@ -128,7 +130,8 @@ public class ScratchService {
 				} catch (ParseException e) {
 					// TODO Auto-generated catch block
 					//这里的异常应该是不用调用者去捕捉的，因为上面直接生成，中间没有更改
-					System.out.println("time convert error"+o1.getScratchDate()+" "+o2.getScratchDate());
+					logger.debug("time convert error"+o1.getScratchDate()+" "+o2.getScratchDate());
+					logger.error(e);
 					return -1;
 				}
 			}

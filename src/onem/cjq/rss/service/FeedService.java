@@ -1,5 +1,7 @@
 package onem.cjq.rss.service;
 
+import org.apache.log4j.Logger;
+
 import onem.cjq.rss.dao.LastestRssDAO;
 import onem.cjq.rss.dao.impl.FeedDAOImpl;
 import onem.cjq.rss.dao.impl.LastestRssDAOImpl;
@@ -8,6 +10,7 @@ import onem.cjq.rss.domain.LastestRss;
 import onem.cjq.rss.web.Page;
 
 public class FeedService {
+	private static Logger logger = Logger.getLogger(FeedService.class); 
 	private FeedDAOImpl f=new FeedDAOImpl();
 	private LastestRssDAO lrd=new LastestRssDAOImpl();
 
@@ -21,7 +24,7 @@ public class FeedService {
 		
 		if(feed==null) {
 			feed=f.getFeed((int) f.newFeed());
-			System.out.println("新建feed，id"+feed.getId());
+			logger.debug("新建feed，id"+feed.getId());
 		}
 		return feed;
 	}

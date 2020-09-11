@@ -11,6 +11,9 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+
+import org.apache.log4j.Logger;
+
 import onem.cjq.rss.dao.FeedDAO;
 import onem.cjq.rss.dao.impl.FeedDAOImpl;
 import onem.cjq.rss.db.JDBCUtils;
@@ -18,6 +21,7 @@ import onem.cjq.rss.domain.Feed;
 import onem.cjq.rss.web.ConnectionContext;
 
 public class RssGenManage implements Runnable {
+	private static Logger logger = Logger.getLogger(RssGenManage.class); 
 	// 存储exectors添加的schedule任务，方便之后执行删除，更新等操作
 	private volatile Map<Integer, ScheduledFuture<?>> tasks = new HashMap<Integer, ScheduledFuture<?>>();
 	// 从数据库中提取等待执行的任务，不能把新的、将要执行的任务放到此处，因为当前线程正在逐个遍历任务并添加到线程池中
@@ -43,13 +47,14 @@ public class RssGenManage implements Runnable {
 			// 不需要考虑feed是否存在于数据库中，因为feed制作页面会帮助分配一个新的feed
 			fdi.updateFeed(feed);
 			if ((task = tasks.get(feed.getId())) != null) {
-				System.out.println("更新已经被调度的任务id " + feed.getId());
+				logger.debug("更新已经被调度的任务id " + feed.getId());
 				task.cancel(true);		
 			}
 			task = ses.scheduleAtFixedRate(new RssGenTaskRunnable(feed), 0, 30, TimeUnit.MINUTES);
 			tasks.put(feed.getId(), task);
 		} catch (Exception e) {
-			System.out.println("添加任务时出现问题");
+			logger.error("添加任务时出现问题");
+			logger.error(e);
 		}finally {
 			lock.unlock();
 		}
@@ -62,12 +67,13 @@ public class RssGenManage implements Runnable {
 		lock.lock();
 		try {
 			if((task=tasks.get(id))!=null) {
-				System.out.println("删除正在执行的任务id "+id);
+				logger.debug("删除正在执行的任务id "+id);
 				task.cancel(true);
 			}
 			fdi.delFeed(id);
 		}catch(Exception e) {
-			System.out.println("删除任务时出现问题");
+			logger.error("删除任务时出现问题");
+			logger.error(e);
 		}finally {
 			lock.unlock();
 		}
@@ -89,14 +95,14 @@ public class RssGenManage implements Runnable {
 				// 或者通过addTask去提前增加某个任务
 				if (fdi.getFeed(feed.getId()) == null || tasks.get(feed.getId())!=null) {
 					it.remove();
-					System.out.println("更新时发现无效任务或者已经被调度，取消");
+					logger.error("更新时发现无效任务或者已经被调度，取消");
 					continue;
 				}
 				ScheduledFuture<?> sf = ses.scheduleAtFixedRate(new RssGenTaskRunnable(feed), 0, 30, TimeUnit.MINUTES);
 				tasks.put(feed.getId(), sf);
 			} catch (Exception e) {
-				e.printStackTrace();
-				System.out.println("在更新调度时发生错误");
+				logger.error("在更新调度时发生错误");
+				logger.error(e);
 			} finally {
 				lock.unlock();
 			}
@@ -104,10 +110,11 @@ public class RssGenManage implements Runnable {
 			try {
 				Thread.sleep(3 * 1000);
 			} catch (InterruptedException e1) {
-				System.out.println("不可能到此处");
+				logger.debug("不可能到此处");
+				logger.error(e1);
 			}
 		}
-		System.out.println("所有任务已经更新完成！");
+		logger.debug("所有任务已经更新完成！");
 		JDBCUtils.release(conn);
 
 	}

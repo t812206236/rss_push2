@@ -9,7 +9,6 @@ public class Rfc822Time {
 	public static String dateToStr() {
 		SimpleDateFormat fm = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss", Locale.ENGLISH);
 		Date date = new Date();
-		// System.out.println(date);
 		return fm.format(date) + " GMT";
 	}
 

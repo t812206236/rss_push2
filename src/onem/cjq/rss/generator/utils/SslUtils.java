@@ -10,7 +10,10 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import org.apache.log4j.Logger;
+
 public class SslUtils {
+	private static Logger logger = Logger.getLogger(SslUtils.class); 
 	private static void trustAllHttpsCertificates() throws Exception {
 		TrustManager[] trustAllCerts = new TrustManager[1];
 		TrustManager tm = new miTM();
@@ -50,7 +53,7 @@ public class SslUtils {
 	public static void ignoreSsl() throws Exception {
 		HostnameVerifier hv = new HostnameVerifier() {
 			public boolean verify(String urlHostName, SSLSession session) {
-				System.out.println("Warning: URL Host: " + urlHostName + " vs. " + session.getPeerHost());
+				logger.debug("Warning: URL Host: " + urlHostName + " vs. " + session.getPeerHost());
 				return true;
 			}
 		};

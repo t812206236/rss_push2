@@ -10,10 +10,10 @@
     <property name="driverClass">com.mysql.jdbc.Driver</property>
     
 	<!--每60秒检查所有连接池中的空闲连接。Default: 0 -->
-	<property name="idleConnectionTestPeriod">30</property>
+	<property name="idleConnectionTestPeriod">120</property>
 	<!--当连接池用完时客户端调用getConnection()后等待获取新连接的时间，超时后将抛出
 	SQLException,如设为0则无限期等待。单位毫秒。Default: 0 -->
-	<property name="checkoutTimeout">60000</property>
+	<property name="checkoutTimeout">1000</property>
 	<!--获取连接失败将会引起所有等待连接池来获取连接的线程抛出异常。但是数据源仍有效
 	保留，并在下次调用getConnection()的时候继续尝试获取连接。如果设为true，那么在尝试
 	获取连接失败后该数据源将申明已断开并永久关闭。Default: false-->
@@ -21,22 +21,22 @@
 	<!--连接关闭时默认将所有未提交的操作回滚。Default: false -->	
 	<property name="autoCommitOnClose">false</property>
 	<!--两次连接中间隔时间，单位毫秒。Default: 1000 -->
-	<property name="acquireRetryDelay">1000</property>
+	<property name="acquireRetryDelay">0</property>
 	<!--定义在从数据库获取新连接失败后重复尝试的次数。Default: 30 -->
 	<property name="acquireRetryAttempts">30</property>
 	<!--当连接池中的连接耗尽的时候c3p0一次同时获取的连接数。Default: 3 -->
-    <property name="acquireIncrement">2</property>
+    <property name="acquireIncrement">3</property>
     
 	<!--初始化时获取三个连接，取值应在minPoolSize与maxPoolSize之间。Default: 3 -->
     <property name="initialPoolSize">5</property>
     <property name="minPoolSize">5</property>
-    <property name="maxPoolSize">10</property>
+    <property name="maxPoolSize">100</property>
 	<!--JDBC的标准参数，用以控制数据源内加载的PreparedStatements数量。但由于预缓存的statements
 	属于单个connection而不是整个连接池。所以设置这个参数需要考虑到多方面的因素。
 	如果maxStatements与maxStatementsPerConnection均为0，则缓存被关闭。Default: 0-->
-    <property name="maxStatements">20</property> 
+    <property name="maxStatements">0</property> 
 	<!--maxStatementsPerConnection定义了连接池内单个连接所拥有的最大缓存statements数。Default: 0 -->
-    <property name="maxStatementsPerConnection">5</property>
+    <property name="maxStatementsPerConnection">0</property>
 	
   </named-config>
 </c3p0-config>

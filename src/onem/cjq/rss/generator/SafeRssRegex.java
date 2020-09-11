@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
+
+import org.apache.log4j.Logger;
+
 import onem.cjq.rss.generator.domain.RssEachItem;
 import onem.cjq.rss.generator.domain.RssMatchResult;
 
@@ -15,6 +18,8 @@ import onem.cjq.rss.generator.domain.RssMatchResult;
  */
 public class SafeRssRegex implements RssRegex {
 
+	private static Logger logger = Logger.getLogger(SafeRssRegex.class); 
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<RssMatchResult> exportMatchContent(String src, String rssRegex) {
@@ -27,7 +32,7 @@ public class SafeRssRegex implements RssRegex {
 			result = task.get(3, TimeUnit.SECONDS);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e);
 			task.cancel(true);
 			throw new RuntimeException(e);
 		}
@@ -45,7 +50,7 @@ public class SafeRssRegex implements RssRegex {
 			result = task.get(3, TimeUnit.SECONDS);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e);
 			task.cancel(true);
 			throw new RuntimeException(e);
 		}
@@ -64,7 +69,7 @@ public class SafeRssRegex implements RssRegex {
 			result = task.get(3, TimeUnit.SECONDS);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e);
 			task.cancel(true);
 			throw new RuntimeException(e);
 		}

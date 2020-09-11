@@ -7,6 +7,8 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
+import org.apache.log4j.Logger;
+
 /**
  * 反射的 Utils 函数集合
  * 提供访问私有变量, 获取泛型类型 Class, 提取集合中元素属性等 Utils 函数
@@ -14,7 +16,7 @@ import java.lang.reflect.Type;
  *
  */
 public class ReflectionUtils {
-
+	private static Logger logger = Logger.getLogger(ReflectionUtils.class); 
 	
 	/**
 	 * 通过反射, 获得定义 Class 时声明的父类的泛型参数的类型
@@ -129,7 +131,7 @@ public class ReflectionUtils {
 		try {
 			return method.invoke(object, parameters);
 		} catch(IllegalAccessException e) {
-			System.out.println("不可能抛出的异常");
+			logger.debug("不可能抛出的异常");
 		} 
 		
 		return null;
@@ -152,7 +154,7 @@ public class ReflectionUtils {
 		try {
 			field.set(object, value);
 		} catch (IllegalAccessException e) {
-			System.out.println("不可能抛出的异常");
+			logger.debug("不可能抛出的异常");
 		}
 	}
 	
@@ -175,7 +177,7 @@ public class ReflectionUtils {
 		try {
 			result = field.get(object);
 		} catch (IllegalAccessException e) {
-			System.out.println("不可能抛出的异常");
+			logger.debug("不可能抛出的异常");
 		}
 		
 		return result;

@@ -5,12 +5,16 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.log4j.Logger;
+
 import onem.cjq.rss.generator.domain.RssEachItem;
 import onem.cjq.rss.generator.domain.RssMatchResult;
 import onem.cjq.rss.generator.utils.InterruptibleCharSequence;
 
 public class SimpleRssRegex implements RssRegex {
 
+	private static Logger logger = Logger.getLogger(SimpleRssRegex.class); 
+	
 	// 输入一个建立rss时使用的正则，为了对用户友好，我们要让regex尽量简单, 在这里我们规定{*}表示不必要得东西，{%}表示需要的东西
 	private String convert2NormalRegex(String src) {
 		if (src.trim().equals("{*}") || src.trim().equals("{%}")) {
@@ -97,10 +101,14 @@ public class SimpleRssRegex implements RssRegex {
 
 			for (int i = 0; i < 3; i++) {
 				try {
+					if(formatFilled[i]==null || rmr.getMatchContent()==null)
+						continue;
+					
 					InterruptibleCharSequence ics = new InterruptibleCharSequence(formatFilled[i]);
 					formatFilled[i] = ics.replace("{%" + rmr.getMatchIndex() + "}", rmr.getMatchContent());
 				} catch (Exception e) {
-					// System.out.println("something null,but it doesn't matter");
+					logger.error(e);
+					logger.error("text:"+formatFilled[i]+" index:"+rmr.getMatchIndex()+" content:"+rmr.getMatchContent());
 				} finally {
 				}
 			}
